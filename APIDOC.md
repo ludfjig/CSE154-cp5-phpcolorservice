@@ -1,47 +1,31 @@
-# *FILL IN NAME* API Documentation
-*Fill in a short description here about the API's purpose.*
+# Color Finder API Documentation
+This API allows the user to find colors
+in a specific range of redness.
 
 ## *Fill in Endpoint 1 Title*
-**Request Format:** *Fill in example request format*
+**Request Format:** colors.php?min={min}&max={max}
 
 **Request Type:** GET
 
-**Returned Data Format**: JSON
+**Returned Data Format**: Text/plain
 
-**Description:** *Fill in description*
+**Description:** Returns a list of all colors
+whose red channel lies inbetween 'min' and 'max'.
 
-
-**Example Request:** *Fill in example request*
+**Example Request:** colors.php?min=20&max=50
 
 **Example Response:**
 *Fill in example response in the {}*
 
-```json
-{
-
-}
-```
-
-**Error Handling:**
-*Fill in any error handling*
-
-## *Fill in Endpoint 2 Title*
-**Request Format:** *Fill in example request format*
-
-**Request Type**: POST
-
-**Returned Data Format**: Plain Text
-
-**Description:** *Fill in description*
-
-**Example Request:** *Fill in example request*
-
-**Example Response:**
-*Fill in example response in the ticks*
-
-```
-
-```
+  ```
+forest green
+lime green
+sea green
+light sea green
+dark slate gray
+dodger blue
+  ```
 
 **Error Handling:**
-*Fill in any error handling*
+Will give 503 error if API cannot connect to the database.
+Will 400 and provide helpful message if parameters are missing or illegal.

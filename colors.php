@@ -1,53 +1,61 @@
 <?php
 /*
-  Name: Ludvig Liljenberg
-  Section: CSE 154 AF
-  Date: 05/16/2019
+ Name: Ludvig Liljenberg
+ Section: CSE 154 AF
+ Date: 05/16/2019
 
-  This file provides back-end support for the color website.
-  Based on the input parameters supplied using GET requests,
-  the API outputs different details about colors in different formats.
+ This file provides back-end support for the color website.
+ Based on the the parameters supplied using GET requests,
+ the API outputs different colors in plain text.
 
-  Web Service details:
-  =====================================================================
-  Required GET parameters:
-  - type
-  - mode
-  Output formats:
-  - Plain text and JSON
-  Output Details:
-  - If the mode parameter is set to "json", the API
-  will output details about the color given in the color parameter as a json object.
-  - If the mode parameter is set to "text", details about the color given in the
-  color parameter will be returned in plain text format.
-  - Else outputs 400 error message as plain text, or if the color parameter is not assigned
-  an unrecognizable value.
+ Web Service details:
+ =====================================================================
+ Required GET parameters:
+ - min
+ - max
+ Output formats:
+ - Plain text
+ Output Details:
+ - Outputs the colors whose red-channel lies between the given min and max paramaters.
+ - Min and max must lie between 0 and 255, and min must be less than or equal to max.
+ - Outputs helpful messages if not all parameters are passed or if they are illegal.
 */
 
 include("common.php");
 
-
-
-$db = get_PDO();
-
-if(isset($_GET["value"]) && isset($_GET["min"]) && isset($_GET["max"])){
-  $value = $_GET["value"];
+if (isset($_GET["min"]) && isset($_GET["max"])) {
   $min = $_GET["min"];
   $max = $_GET["max"];
-  if($value === "red" || $value === "green" || $value === "blue"){
-    header("Content-type: text/plain");
-    $sql = "SELECT * FROM colors WHERE :value < :max AND :value > :min;";
-    $stmt = $db->prepare($sql);
-    $params = array("value" => $value, "max" => $max, "min" => $min);
-    $stmt->execute($params);
-    //$rows = $db->query("SELECT * FROM colors WHERE red < 100 AND red > 50;");
-    foreach($stmt as $row){
-      print("{$row["name"]}\n");
-    }
-  }
-}else{
-  //missing param
+  if ($min >= 0 && $min <= 255 && $max >= 0 && $max <= 255 && $max >= $min) {
+    try {
+      $db = get_PDO();
+      $sql = "SELECT name FROM colors WHERE red <= :max and red >= :min";
+      $stmt = $db->prepare($sql);
+      $params = array(":max" => $max, "min" => $min);
+      $stmt->execute($params);
 
+      header("Content-type: text/plain");
+      foreach ($stmt as $row) {
+        print("{$row["name"]}\n");
+      }
+    } catch (PDOException $ex) {
+      db_error();
+    }
+  } else {
+    print_error("Please use a number between 0 and 255 for min and max, and make sure min <= max");
+  }
+} else {
+  print_error("Please make sure to pass the parameters 'min' and 'max'");
+}
+
+/**
+ * Prints out the given message and gives a 400 error.
+ * @param  [String] $msg - the message to print.
+ */
+function print_error($msg){
+  header("HTTP/1.1 400 Invalid Request");
+  header("Content-type: text/plain");
+  print($msg);
 }
 
 ?>
