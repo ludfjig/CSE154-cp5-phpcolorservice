@@ -26,14 +26,28 @@
 
 include("common.php");
 
+
+
 $db = get_PDO();
 
-if(isset($_GET["name"])){
-  header("Content-type: text/plain");
-  $rows = $db->query("SELECT * FROM colors WHERE red < 100 AND red > 50;");
-  foreach($rows as $row){
-    print("{$row["name"]}\n");
+if(isset($_GET["value"]) && isset($_GET["min"]) && isset($_GET["max"])){
+  $value = $_GET["value"];
+  $min = $_GET["min"];
+  $max = $_GET["max"];
+  if($value === "red" || $value === "green" || $value === "blue"){
+    header("Content-type: text/plain");
+    $sql = "SELECT * FROM colors WHERE :value < :max AND :value > :min;";
+    $stmt = $db->prepare($sql);
+    $params = array("value" => $value, "max" => $max, "min" => $min);
+    $stmt->execute($params);
+    //$rows = $db->query("SELECT * FROM colors WHERE red < 100 AND red > 50;");
+    foreach($stmt as $row){
+      print("{$row["name"]}\n");
+    }
   }
+}else{
+  //missing param
+
 }
 
 ?>
