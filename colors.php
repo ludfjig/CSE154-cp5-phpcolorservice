@@ -3,10 +3,12 @@
  Name: Ludvig Liljenberg
  Section: CSE 154 AF
  Date: 05/16/2019
+ CP 5
 
  This file provides back-end support for the color website.
  Based on the the parameters supplied using GET requests,
- the API outputs different colors in plain text.
+ the API outputs different colors in plain text. Colors kindly
+ provided by wikipedia.
 
  Web Service details:
  =====================================================================
@@ -53,8 +55,8 @@ if (isset($_GET["min"]) && isset($_GET["max"])) {
  * @param  [String] $msg - the message to print.
  */
 function print_error($msg){
-  header("HTTP/1.1 400 Invalid Request");
   header("Content-type: text/plain");
+  header("HTTP/1.1 400 Invalid Request");
   print($msg);
 }
 

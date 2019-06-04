@@ -2,6 +2,7 @@
   /**
    * Ludvig Liljenberg
    * Section AF
+   * CP5
    * 04/06/2019
    *
    * This php file includes the function for creating a connection with the database, as
@@ -35,11 +36,11 @@
   }
 
   /**
-   * Gives a 503 error and prints out an error msg.
+   * Gives a 503 error and prints out an error msg. Ends the program.
    */
   function db_error(){
-    header("HTTP/1.1 503 Service Unavailable");
     header("Content-type: text/plain");
+    header("HTTP/1.1 503 Service Unavailable");
     die("An error occured when connecting to the database");
   }
 ?>

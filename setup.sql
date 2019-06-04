@@ -1,3 +1,9 @@
+-- Ludvig Liljenberg
+-- 04/06/2019
+-- CP 5, Section AF
+--
+-- This file creates a new database colordb, table colors, and populates it
+-- with multiple different colors.
 
 CREATE DATABASE IF NOT EXISTS colordb;
 
