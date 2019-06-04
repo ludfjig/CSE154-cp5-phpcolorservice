@@ -2,7 +2,7 @@
 This API allows the user to find colors
 in a specific range of redness.
 
-## *Fill in Endpoint 1 Title*
+## Find a color within a range of red
 **Request Format:** colors.php?min={min}&max={max}
 
 **Request Type:** GET
